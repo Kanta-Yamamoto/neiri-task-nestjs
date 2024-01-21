@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+  db-data:
+  pgadmindata:
+
+services:
+  db:
+    image: postgres:14
+    container_name: blog-training-db
+    volumes:
+      - db-data:/var/lib/postgresql/blog_training_db_development/data
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+  pgadmin:
+    image: dpage/pgadmin4:5.2
+    volumes:
+      - pgadmindata:/var/lib/pgadmin4/storage
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@example.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      TZ: Asia/Tokyo
+    depends_on:
+      - db
+    ports:
+      - '5050:80'
